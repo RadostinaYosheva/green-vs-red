@@ -20,6 +20,8 @@ class Grid {
     
     int getWidth() const;
     int getHeight() const;
+    
+    friend std::istream& operator>>(std::istream&, const Grid&);
 };
 
 #endif

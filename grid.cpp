@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include "grid.h"
 #include "helpers.h"
 
@@ -41,4 +43,11 @@ int Grid::getWidth() const {
 
 int Grid::getHeight() const {
     return height;
+}
+
+std::istream& operator>>(std::istream& in, const Grid& grid){
+    for (int i = 0; i < grid.getHeight(); i++){
+        in >> grid.cells[i];
+    }
+        return in;
 }
