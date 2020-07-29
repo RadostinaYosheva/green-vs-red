@@ -18,9 +18,11 @@ class Grid {
     ~Grid();
     Grid& operator=(const Grid&);
     
+    bool isGreenCell(int cellX, int cellY) const;
     int getWidth() const;
     int getHeight() const;
-    
+    int getGreenNeighbours(int targetX, int targetY);
+
     friend std::istream& operator>>(std::istream&, const Grid&);
 };
 
