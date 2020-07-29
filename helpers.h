@@ -16,6 +16,16 @@ bool areValidCoordinates (int width, int height, int targetX, int targetY){
         && (0 <= targetY) && (targetY < height);
 }
 
+// Check if the current cell is in the array
+bool isValidCell (int width, int height, int cellX, int cellY){
+    return (0 <= cellX) && (cellX < width) && (0 <= cellY) && (cellY < height);
+}
+
+// Check if the current cell is the target
+bool isNotTarget (int targetX, int targetY, int cellX, int cellY){
+    return (targetX != cellX) || (targetY != cellY);
+}
+
 void inputWidthAndHeight(int width, int height){
     // Message for input
     std::cout << "Enter width and height : ";
@@ -41,6 +51,18 @@ void inputCoordinates(int width, int height, int targetX, int targetY){
         std::cin >> targetX >> targetY;
         std::cout << std::endl;
     }
+}
+
+void inputGrid(Grid grid){
+    std::cout << "\nEnter the grid :" << std::endl;
+    for (int i = 0; i < grid.getHeight(); i++){
+        std::cin >> grid;
+    }
+}
+
+void inputNumberGenerations(int N){
+    std::cout << "\nEnter the number N of generations: ";
+    std::cin >> N;
 }
 
 #endif
