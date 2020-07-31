@@ -1,4 +1,7 @@
 #include "gameOfLife.h"
+#include <algorithm>
+#include <sstream>
+#include "helpers.h"
 
 void GameOfLife::allocateGrid(){
     grid = new bool*[height]; 
@@ -35,10 +38,6 @@ GameOfLife::GameOfLife(const GameOfLife& other){
 }
 
 GameOfLife::~GameOfLife(){
-    // for(int i = 0; i < height; i++){
-    //     std::cout << " " << grid[i] << std::endl;
-    // }
-
     for (int i = 0; i < height; i++){
         delete[] grid[i];
     }
@@ -47,7 +46,7 @@ GameOfLife::~GameOfLife(){
 }
 
 // Check if the current cell is green (labeled 1)
-bool GameOfLife::isGreenCell(int cellX, int cellY) const{
+bool GameOfLife::isGreenCell(int cellX, int cellY) const {
     return grid[cellY][cellX] == 1;
 }
 
@@ -114,12 +113,9 @@ void GameOfLife::nextGeneration() {
 }
 
 std::istream& operator>>(std::istream& in, GameOfLife& game){
-    
-    std::cout << "Enter width and height: ";
     game.inputWidthAndHeight(in);
     game.allocateGrid();
     
-    std::cout << "Enter grid:" << std::endl;
     game.inputGrid(in);
     
     return in;
@@ -127,13 +123,17 @@ std::istream& operator>>(std::istream& in, GameOfLife& game){
 
 void GameOfLife::inputGrid(std::istream& in){
     for (int i = 0; i < height; i++){
-        for (int j = 0; j < width; j++){
-            in >> grid[i][j];
+        std::string line;
+        getline(in, line);
+        for(int j = 0; j < line.size(); j++){
+            grid[i][j] = (line[j] == '1');
         }
     }
 }
 
 void GameOfLife::inputWidthAndHeight(std::istream& in){
-    in >> width >> height;
+    std::string line;
+    getline(in, line);
+    std::stringstream ss = splitCommaSeparatedStr(line);
+    ss >> width >> height;
 }
-    

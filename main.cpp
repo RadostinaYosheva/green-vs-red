@@ -1,6 +1,6 @@
 #include <iostream>
-#include "gameOfLife.h"
 #include "helpers.h"
+#include "gameOfLife.h"
 
 int main()
 {
@@ -15,21 +15,18 @@ int main()
     // inputCoordinates(width, height, targetX, targetY);
     // inputNumberGenerations(N);
 
-    int targetX, targetY, n;
+    int targetX, targetY, generations;
     
     GameOfLife game;
 
     std::cin >> game;
 
-    inputCoordinates(game.getWidth(),
-                     game.getHeight(), 
-                     targetX, 
-                     targetY);
+    // std::cin.clear();
 
-    inputNumberGenerations(n);
+    inputCoordinatesAndGenerations(std::cin, targetX, targetY, generations);
 
     int counter = 0;
-    for (int i = 0; i <= n; i++){
+    for (int i = 0; i <= generations; i++){
         if (game.isGreenCell(targetX, targetY))
             counter++;
 
