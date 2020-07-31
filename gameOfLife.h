@@ -7,7 +7,23 @@
 #define GREEN 1
 
 class GameOfLife {
-    private:
+public:
+    GameOfLife();
+    GameOfLife(const GameOfLife&);
+    ~GameOfLife();
+    GameOfLife& operator=(const GameOfLife& other);
+
+    int getWidth() const { return width; }
+    int getHeight() const { return height; }
+    
+    bool isGreenCell(int cellX, int cellY) const;
+    //If this returns a new instance instead of mutating the current one
+    //the code would be better :)
+    void nextGeneration();
+
+    friend std::istream& operator>>(std::istream&, GameOfLife&);
+    
+private:
     int width, height;
     bool **grid;
 
@@ -20,20 +36,7 @@ class GameOfLife {
     bool isNotTarget(int targetX, int targetY, int cellX, int cellY) const;
     int getGreenNeighbours(int targetX, int targetY) const;
     
+    //idealy we don't mutate state
     void inputGrid(std::istream& in);
     void inputWidthAndHeight(std::istream& in);
-    
-    public:
-    GameOfLife();
-    GameOfLife(const GameOfLife&);
-    ~GameOfLife();
-    GameOfLife& operator=(const GameOfLife& other);
-
-    int getWidth() const { return width; }
-    int getHeight() const { return height; }
-    
-    bool isGreenCell(int cellX, int cellY) const;
-    void nextGeneration();
-
-    friend std::istream& operator>>(std::istream&, GameOfLife&);
 };

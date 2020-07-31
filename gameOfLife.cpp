@@ -62,7 +62,7 @@ bool GameOfLife::isGreenCell(int cellX, int cellY) const {
     return grid[cellY][cellX] == GREEN;
 }
 
-int GameOfLife::getGreenNeighbours(int targetX, int targetY) const{
+int GameOfLife::getGreenNeighboursCount(int targetX, int targetY) const {
     int counter = 0;
 
     for (int row = targetY - 1; row <= targetY + 1; row++){
@@ -78,20 +78,20 @@ int GameOfLife::getGreenNeighbours(int targetX, int targetY) const{
 
 bool GameOfLife::shouldBeGreen(int cellX, int cellY) const {
     if (grid[cellY][cellX] == RED){
-        return getGreenNeighbours(cellX, cellY) == 3 ||
-               getGreenNeighbours(cellX, cellY) == 6; 
+        return getGreenNeighboursCount(cellX, cellY) == 3 ||
+               getGreenNeighboursCount(cellX, cellY) == 6; 
     } else {
-        return getGreenNeighbours(cellX, cellY) == 2 ||
-               getGreenNeighbours(cellX, cellY) == 3 ||
-               getGreenNeighbours(cellX, cellY) == 6;
+        return getGreenNeighboursCount(cellX, cellY) == 2 ||
+               getGreenNeighboursCount(cellX, cellY) == 3 ||
+               getGreenNeighboursCount(cellX, cellY) == 6;
     }
 }
 
-bool GameOfLife::isValidCell (int cellX, int cellY) const{
+bool GameOfLife::isValidCell (int cellX, int cellY) const {
     return (0 <= cellX) && (cellX < width) && (0 <= cellY) && (cellY < height);
 }
 
-bool GameOfLife::isNotTarget (int targetX, int targetY, int cellX, int cellY) const{
+bool GameOfLife::isNotTarget (int targetX, int targetY, int cellX, int cellY) const {
     return (targetX != cellX) || (targetY != cellY);
 }
 
@@ -136,5 +136,6 @@ void GameOfLife::inputWidthAndHeight(std::istream& in){
     std::string line;
     getline(in, line);
     std::stringstream ss = splitCommaSeparatedStr(line);
+    
     ss >> width >> height;
 }
