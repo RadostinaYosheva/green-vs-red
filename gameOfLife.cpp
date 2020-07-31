@@ -3,14 +3,28 @@
 #include <sstream>
 #include "helpers.h"
 
-void GameOfLife::allocateGrid(){
-    grid = new bool*[height]; 
+bool** GameOfLife::allocateGrid(){
+    bool ** newGrid = new bool*[height]; 
     for (int i = 0; i < height; i++){
-        grid[i] = new bool[width];
+        newGrid[i] = new bool[width];
     }
+
+    return newGrid;
+}
+
+void GameOfLife::freeGrid(bool ** oldGrid){
+    for (int i = 0; i < height; i++){
+        delete[] oldGrid[i];
+    }
+
+    delete[] oldGrid;
 }
 
 void GameOfLife::copyGrid(const GameOfLife& other){
+    this->height = other.height;
+    this->width = other.width;
+    grid = allocateGrid();
+
     for (int i = 0; i < height; i++){
         for (int j = 0; j < width; j++){
             this->grid[i][j] = other.grid[i][j];
@@ -24,16 +38,7 @@ GameOfLife::GameOfLife(){
     grid = nullptr;
 }
 
-GameOfLife::GameOfLife(int width, int height){
-    this->width = width;
-    this->height = height;
-    allocateGrid();
-}
-
 GameOfLife::GameOfLife(const GameOfLife& other){
-    this->height = other.height;
-    this->width = other.width;
-    allocateGrid();
     copyGrid(other);
 }
 
@@ -45,9 +50,16 @@ GameOfLife::~GameOfLife(){
     delete[] grid;
 }
 
-// Check if the current cell is green (labeled 1)
+GameOfLife& GameOfLife::operator=(const GameOfLife& other){
+    if(this != &other){
+        copyGrid(other);
+    }
+
+    return *this;
+}
+
 bool GameOfLife::isGreenCell(int cellX, int cellY) const {
-    return grid[cellY][cellX] == 1;
+    return grid[cellY][cellX] == GREEN;
 }
 
 int GameOfLife::getGreenNeighbours(int targetX, int targetY) const{
@@ -65,7 +77,7 @@ int GameOfLife::getGreenNeighbours(int targetX, int targetY) const{
 }
 
 bool GameOfLife::shouldBeGreen(int cellX, int cellY) const {
-    if (grid[cellY][cellX] == 0){
+    if (grid[cellY][cellX] == RED){
         return getGreenNeighbours(cellX, cellY) == 3 ||
                getGreenNeighbours(cellX, cellY) == 6; 
     } else {
@@ -75,23 +87,17 @@ bool GameOfLife::shouldBeGreen(int cellX, int cellY) const {
     }
 }
 
-// Check if the current cell is in the array
 bool GameOfLife::isValidCell (int cellX, int cellY) const{
     return (0 <= cellX) && (cellX < width) && (0 <= cellY) && (cellY < height);
 }
 
-// Check if the current cell is the target
 bool GameOfLife::isNotTarget (int targetX, int targetY, int cellX, int cellY) const{
     return (targetX != cellX) || (targetY != cellY);
 }
 
 void GameOfLife::nextGeneration() {
-    bool ** newGrid = new bool*[height]; 
-    for (int i = 0; i < height; i++){
-        newGrid[i] = new bool[width];
-    }
+    bool ** newGrid = allocateGrid();
 
-    //seed new
     for (int row = 0; row < height; row++){
         for (int column = 0; column < width; column++){
             if (shouldBeGreen(column, row)){
@@ -102,19 +108,14 @@ void GameOfLife::nextGeneration() {
         }
     }
 
-    //delete old
-    for (int i = 0; i < height; i++){
-        delete[] grid[i];
-    }
-
-    delete[] grid;
+    freeGrid(grid);
 
     grid = newGrid;
 }
 
 std::istream& operator>>(std::istream& in, GameOfLife& game){
     game.inputWidthAndHeight(in);
-    game.allocateGrid();
+    game.grid = game.allocateGrid();
     
     game.inputGrid(in);
     
