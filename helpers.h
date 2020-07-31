@@ -1,7 +1,7 @@
 #ifndef _HELPERS_H
 #define _HELPERS_H
 
-#include "grid.h"
+#include "gameOfLife.h"
 
 bool areNotValidCoordinates (int width, int height, int targetX, int targetY){
     return (targetX < 0) || (targetX > width) 

@@ -1,4 +1,4 @@
-#include "grid.h"
+#include "gameOfLife.h"
 
 void GameOfLife::allocateGrid(){
     grid = new bool*[height]; 
