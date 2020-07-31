@@ -15,6 +15,12 @@ void GameOfLife::copyGrid(const GameOfLife& other){
     }
 }
 
+GameOfLife::GameOfLife(){
+    width = 0;
+    height = 0;
+    grid = nullptr;
+}
+
 GameOfLife::GameOfLife(int width, int height){
     this->width = width;
     this->height = height;
@@ -107,12 +113,27 @@ void GameOfLife::nextGeneration() {
     grid = newGrid;
 }
 
-std::istream& operator>>(std::istream& in, const GameOfLife& generation){
-    for (int i = 0; i < generation.height; i++){
-        for (int j = 0; j < generation.width; j++){
-            in >> generation.grid[i][j];
-        }
-    }
-
+std::istream& operator>>(std::istream& in, GameOfLife& game){
+    
+    std::cout << "Enter width and height: ";
+    game.inputWidthAndHeight(in);
+    game.allocateGrid();
+    
+    std::cout << "Enter grid:" << std::endl;
+    game.inputGrid(in);
+    
     return in;
 }
+
+void GameOfLife::inputGrid(std::istream& in){
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            in >> grid[i][j];
+        }
+    }
+}
+
+void GameOfLife::inputWidthAndHeight(std::istream& in){
+    in >> width >> height;
+}
+    

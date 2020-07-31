@@ -1,22 +1,13 @@
-#ifndef _HELPERS_H
-#define _HELPERS_H
+#pragma once
 
-#include "gameOfLife.h"
+#include<iostream>
 
 bool areNotValidCoordinates (int width, int height, int targetX, int targetY){
     return (targetX < 0) || (targetX > width) 
         || (targetY < 0) || (targetY > height);
 }
 
-void inputWidthAndHeight(int& width, int& height){
-    // Message for input
-    std::cout << "Enter width and height : ";
-    std::cin >> width >> height;
-    std::cout << std::endl;
-}
-
 void inputCoordinates(int width, int height, int& targetX, int& targetY){
-    // Message for input
     std::cout << "\nEnter target cell's coordinates : ";
     std::cin >> targetX >> targetY;
 
@@ -28,14 +19,7 @@ void inputCoordinates(int width, int height, int& targetX, int& targetY){
     }
 }
 
-void inputGrid(GameOfLife& grid){
-    std::cout << "\nEnter the grid :" << std::endl;
-    std::cin >> grid;
-}
-
-void inputNumberGenerations(int& N){
+void inputNumberGenerations(int& n){
     std::cout << "\nEnter the number N of generations: ";
-    std::cin >> N;
+    std::cin >> n;
 }
-
-#endif

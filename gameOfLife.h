@@ -1,5 +1,4 @@
-#ifndef _GRID_H
-#define _GRID_H
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -8,15 +7,24 @@ class GameOfLife {
     private:
     int width, height;
     bool **grid;
+
     void allocateGrid();
     void copyGrid(const GameOfLife&);
+    
+    void inputGrid(std::istream& in);
+    void inputWidthAndHeight(std::istream& in);
+    
+    //operator= should be private
+    GameOfLife(const GameOfLife&);
 
     public:
+    GameOfLife();
     GameOfLife(int width, int height);
-    GameOfLife(const GameOfLife&);
     ~GameOfLife();
+
+    int getWidth() const { return width; }
+    int getHeight() const { return height; }
     
-    bool areNotValidCoordinates (int targetX, int targetY) const;
     bool isGreenCell(int cellX, int cellY) const;
     bool shouldBeGreen(int cellX, int cellY) const;
     bool isValidCell(int cellX, int cellY) const;
@@ -24,7 +32,5 @@ class GameOfLife {
     int getGreenNeighbours(int targetX, int targetY) const;
     void nextGeneration();
 
-    friend std::istream& operator>>(std::istream&, const GameOfLife&);
+    friend std::istream& operator>>(std::istream&, GameOfLife&);
 };
-
-#endif
