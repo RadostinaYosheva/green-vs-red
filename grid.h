@@ -4,26 +4,27 @@
 #include <iostream>
 #include <string>
 
-class Grid {
+class GameOfLife {
     private:
     int width, height;
-    std::string *cells;
-
-    void copyGrid(const Grid&);
+    bool **grid;
+    void allocateGrid();
+    void copyGrid(const GameOfLife&);
 
     public:
-    Grid();
-    Grid(int width, int height);
-    Grid(const Grid&);
-    ~Grid();
-    Grid& operator=(const Grid&);
+    GameOfLife(int width, int height);
+    GameOfLife(const GameOfLife&);
+    ~GameOfLife();
     
+    bool areNotValidCoordinates (int targetX, int targetY) const;
     bool isGreenCell(int cellX, int cellY) const;
-    int getWidth() const;
-    int getHeight() const;
-    int getGreenNeighbours(int targetX, int targetY);
+    bool shouldBeGreen(int cellX, int cellY) const;
+    bool isValidCell(int cellX, int cellY) const;
+    bool isNotTarget(int targetX, int targetY, int cellX, int cellY) const;
+    int getGreenNeighbours(int targetX, int targetY) const;
+    void nextGeneration();
 
-    friend std::istream& operator>>(std::istream&, const Grid&);
+    friend std::istream& operator>>(std::istream&, const GameOfLife&);
 };
 
 #endif
